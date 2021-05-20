@@ -1,6 +1,5 @@
 package aplicaciones;
 
-
 import java.util.List;
 
 import controladores.ControladorCompra;
@@ -31,7 +30,7 @@ public class PruebaDetalle {
 		for (Detallepedido c : lista) {
 			System.out.println(c);
 		}
-		
+
 //		Detallepedido det = controlDetalle.findByPK(23,2);
 //		
 //		controlDetalle.borrarDetalle(det);
@@ -51,12 +50,12 @@ public class PruebaDetalle {
 		System.out
 				.println("\nEl objeto con el detallePedido la cantidad de 8 articulos" + " es : \n" + detallecantidad);
 
-		//VAmos a crear una nueva compra y obtener el usuario con la pk4
-		//parea crear un nuevo detalle pedido
+		// VAmos a crear una nueva compra y obtener el usuario con la pk4
+		// parea crear un nuevo detalle pedido
 		Compra nuevacompra = controlaCompra.findByPK(5);
 		Usuario pk4 = controlaUsur.findByPK(1);
 		nuevacompra.setUsuario(pk4);
-		controlaCompra.createCompra(nuevacompra);
+		controlaCompra.crearEntidad(nuevacompra);
 
 		Producto nuevoProducto = controlaPro.findByPK(2);
 
@@ -66,15 +65,13 @@ public class PruebaDetalle {
 		nuevoDetalle.setProducto(nuevoProducto);
 		nuevoDetalle.setCantidadarticulos(4);
 
-		controlDetalle.createDetalle(nuevoDetalle);
+		controlDetalle.crearEntidad(nuevoDetalle);
 
 		// Imprimimos la lista
 		System.out.println("\n\nEntidades de la tabla Compra tras añadir nuevo detalle:");
 		for (Detallepedido c : lista) {
 			System.out.println(c);
 		}
-
-		
 
 	}
 

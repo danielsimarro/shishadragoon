@@ -43,7 +43,7 @@ public class PruebaProducto {
 		nuevoProducto.setNombreproducto("Embery Mono");
 		
 		//Persistimos el nuevo producto
-		controlaPro.createProducto(nuevoProducto);
+		controlaPro.crearEntidad(nuevoProducto);
 
 		lista = controlaPro.findAll();
 		// Imprimimos la lista
@@ -55,7 +55,7 @@ public class PruebaProducto {
 		//Modificamos el nuevo producto
 		nuevoProducto.setNombreproducto("Caesar Dorada");
 
-		controlaPro.modifyProducto(nuevoProducto);
+		controlaPro.ModificarEntidad(nuevoProducto);
 		
 		lista = controlaPro.findAll();
 		// Imprimimos la lista
@@ -65,7 +65,7 @@ public class PruebaProducto {
 		}
 		
 		//Borramos el nuevo producto
-		controlaPro.borrarProducto(nuevoProducto);
+		controlaPro.borrarEntidad(nuevoProducto);
 		
 		lista = controlaPro.findAll();
 		// Imprimimos la lista

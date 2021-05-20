@@ -51,7 +51,7 @@ public class PruebaCompra {
 		nuevaCompra.setPreciocompra(BigDecimal.valueOf(152.32));
 		nuevaCompra.setUsuario(pk6);
 
-		controlaCompra.createCompra(nuevaCompra);
+		controlaCompra.crearEntidad(nuevaCompra);
 
 		lista = controlaCompra.findAll();
 		// Imprimimos la lista

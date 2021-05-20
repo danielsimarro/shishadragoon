@@ -68,4 +68,6 @@ public abstract class Controlador {
 	}
 	//Metodo abstracto para buscar la clave primaria que se implementara en cada subclase
 	public abstract Entidad findByPK(int e);
+	
+	
 }

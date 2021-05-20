@@ -50,7 +50,7 @@ public class PruebaUsuario {
 		
 		usuarioNuevo.setCuenta(CuentaPk);
 		
-		controlaUsur.createUsuario(usuarioNuevo);
+		controlaUsur.crearEntidad(usuarioNuevo);
 		
 		lista = controlaUsur.findAll();
 		// Mostramos de nuevo la lista

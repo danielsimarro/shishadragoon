@@ -14,11 +14,13 @@ public static void main(String[] args) {
 		//Cremos el objeto controlador para acceder a los metodos de esta clase
 		ControladorCuenta controlaCuenta = new ControladorCuenta();
 		
+		
+		
 		//Guardamos en una lista de objetos de tipo cuenta(Mapeador) los datos obtenidos
 		//de la tabla Cuenta de la base de datos
 		List<Cuenta> lista = controlaCuenta.findAll();
 		
-//		controlaCuenta.borrarCuenta(controlaCuenta.findByPK(22));
+//		controlaCuenta.borrarEntidad(controlaCuenta.findByPK(9));
 		
 		//Imprimimos la lista 
 		System.out.println("\n\nEntidades de la tabla Cuenta:");
@@ -41,7 +43,7 @@ public static void main(String[] args) {
 		cuentaNueva.setCorreoelectronico("carmelito@hotmail.es");
 				
 		//Añadimo la nueva cuenta
-		controlaCuenta.createCuenta(cuentaNueva);
+		controlaCuenta.crearEntidad(cuentaNueva);
 				
 		lista = controlaCuenta.findAll();
 		//Mostramos de nuevo la lista
@@ -69,7 +71,7 @@ public static void main(String[] args) {
 		cuentaNueva.setContrasena("peralte");
 		cuentaNueva.setCorreoelectronico("telo@hotmail.es");
 				
-		controlaCuenta.modifyCuenta(cuentaNueva);
+		controlaCuenta.ModificarEntidad(cuentaNueva);
 				
 		System.out.println("\nImprimimos el usuario modificado: \n" + cuentaNueva);
 		
