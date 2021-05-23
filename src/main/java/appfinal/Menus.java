@@ -8,7 +8,8 @@ import aplicaciones.MetodosDetalle;
 import aplicaciones.MetodosProducto;
 
 public class Menus {
-	// Metodo que accede a los metodos de cada tabla dependiendo de la tabla que haya
+	// Metodo que accede a los metodos de cada tabla dependiendo de la tabla que
+	// haya
 	// seleccionado en elegirTabla
 	public void tablaElegida() {
 
@@ -19,8 +20,9 @@ public class Menus {
 			eleccion = elegirTabla();
 			repetir = true;
 			switch (eleccion) {
-			//Ceunado el usuario elija la tabla a consultar/modificar, se creara el objeto para acceder a los 
-			//metodos de la tabla elegida y se accedera al menu principal de cada tabla
+			// Ceunado el usuario elija la tabla a consultar/modificar, se creara el objeto
+			// para acceder a los
+			// metodos de la tabla elegida y se accedera al menu principal de cada tabla
 			case "Cuenta":
 
 				MetodosCuenta mCuenta = new MetodosCuenta();
@@ -28,38 +30,40 @@ public class Menus {
 
 				break;
 			case "Usuario":
-				
+
 				MetodosUsuario mUsuario = new MetodosUsuario();
 				mUsuario.opcionesUsuario();
-				
+
 				break;
 			case "Compra":
-				
+
 				MetodosCompra mCompra = new MetodosCompra();
-				mCompra.opcionesCompra();;
-				
+				mCompra.opcionesCompra();
+				;
+
 				break;
-				
+
 			case "Detallepedido":
-				
+
 				MetodosDetalle mDetalle = new MetodosDetalle();
 				mDetalle.opcionesDetalle();
-				
+
 				break;
 			case "Producto":
-				
+
 				MetodosProducto mProducto = new MetodosProducto();
 				mProducto.opcionesProducto();
-				
+
 				break;
 			case "Salir":
 				repetir = salir();
 				break;
 			}
 		} while (repetir == true);
-		
-		//Esto permite asegurarnos de que cuando el usuario pulse en salir y se salga del menu principal
-		//se cierre nuestra aplicación
+
+		// Esto permite asegurarnos de que cuando el usuario pulse en salir y se salga
+		// del menu principal
+		// se cierre nuestra aplicación
 		CierreAplicacion app = new CierreAplicacion();
 		app.attachShutDownHook();
 		System.exit(0);
@@ -81,6 +85,7 @@ public class Menus {
 
 	// Metodo que finaliza el programa mostrando si desea salir o continuar
 	public boolean salir() {
+
 		boolean repetir = true;
 		int op = JOptionPane.showConfirmDialog(null, "¿Deseas salir?", "Salida del programa",
 				JOptionPane.YES_NO_OPTION);
@@ -104,17 +109,17 @@ public class Menus {
 			return false;
 		}
 	}
-	
-	// Este metodo permite verificar si el valor introducido es un decimal
-		public boolean validanDecimal(String cadena) {
 
-			try {
-				double num = Double.parseDouble(cadena);
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
+	// Este metodo permite verificar si el valor introducido es un decimal
+	public boolean validanDecimal(String cadena) {
+
+		try {
+			double num = Double.parseDouble(cadena);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
+	}
 
 	// Este metodo permite introducir un valor y comprobar que este valor solo pueda
 	// ser un número, devolviendo este número
@@ -126,7 +131,7 @@ public class Menus {
 
 		boolean esNumero = true;
 		do {
-			name = JOptionPane.showInputDialog(null,"Escribe aqui el número (Solo numeros)");
+			name = JOptionPane.showInputDialog(null, "Escribe aqui el número (Solo numeros)");
 			esNumero = validanNumero(name);
 			if (!esNumero) {
 				JOptionPane.showMessageDialog(null, "Introduzca solo números", "Error", JOptionPane.DEFAULT_OPTION,
@@ -138,5 +143,14 @@ public class Menus {
 		int numero = Integer.parseInt(name);
 
 		return numero;
+	}
+
+	// Este metodo nos permite llamar a la Introduccion del proyecto
+	public void mostraIntro() {
+
+		Icon icono = new ImageIcon(getClass().getResource("../img/logo.png"));
+
+		JOptionPane.showMessageDialog(null, " Bienvenido a ShishaDragoon ", "Bienvenidos", JOptionPane.PLAIN_MESSAGE,
+				icono);
 	}
 }
