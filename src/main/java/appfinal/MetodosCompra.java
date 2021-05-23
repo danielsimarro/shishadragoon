@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import controladores.ControladorCompra;
@@ -16,37 +18,43 @@ import entidades.Usuario;
 public class MetodosCompra {
 
 	// Los atributos de la clase son objetos para acceder a los metodos de otras
-	// clases
+	// clases, estos estan inicializados para no tener que inicializarlos cada vez
+	// que los vayamos a usar
 	private static ControladorUsuario cUsuario = new ControladorUsuario();
 	private static Menus menu = new Menus();
-	private static MetodosUsuario mu = new MetodosUsuario();
+	private static MetodosUsuario mUsuario = new MetodosUsuario();
 	private static ControladorCompra cCompra = new ControladorCompra();
 
 	// Opciones a elegir de la tabla Compra
 	public String menuCompra() {
 
-		String[] opciones = { "Mostrar todo", "Borrar", "Crear", "Modificar", "Buscar por precio", "Buscar por clave",
-				"Salir" };
+		Icon icono = new ImageIcon(getClass().getResource("../img/compra.png"));
 
-		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas realizar?", "Elegir",
-				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		String[] opciones = { "Mostrar todos los valores", "Borrar Compra", "Crear Compra", "Modificar Compra",
+				"Buscar por precio", "Buscar por clave", "Salir" };
+
+		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas realizar?", "Tabla Compra",
+				JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
 
 		return opcionElegida;
 
 	}
 
-	// Permite entrar a los metodos de la tabla cuenta dependiendo de la eleccion
-	// hecha por el usuario
+	// Este metodo contiene un swicth con las posibles elecciones que haya elegido
+	// el usuario
+	// cuendo el usuario eligue una opciion entra y realiza esa función
 	public void opcionesCompra() {
 
+		// Atributos para controlar lo que introduce el usuario
 		boolean repetir;
 		boolean existePk;
 		int numeroIntroudcido;
 		String precio;
 		// Usuario que se crea nueva cada vez que se inicializa el bucle
 		Compra compra;
-		// Valores modificables del usuario
+
 		do {
+			// Inicializamos valores cada vez que se vuelve a ejecutar el bucle
 			String opcion = menuCompra();
 			repetir = true;
 			numeroIntroudcido = -1;
@@ -55,11 +63,14 @@ public class MetodosCompra {
 			precio = "";
 
 			switch (opcion) {
-			case "Mostrar todo":
+
+			case "Mostrar todos los valores":
 				List<Compra> listaCompra = cCompra.findAll();
+				System.out.println("---------Los valores de la tabla Compra son:----------");
 				listaCompra.forEach(System.out::println);
 				break;
-			case "Borrar":
+
+			case "Borrar Compra":
 
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
@@ -73,8 +84,10 @@ public class MetodosCompra {
 				}
 
 				break;
-			case "Crear":
-				String fecha = JOptionPane.showInputDialog("Escribe la fecha con formato 'dd/MM/yyyy'","00/00/0000");
+
+			case "Crear Compra":
+				String fecha = JOptionPane.showInputDialog("Escribe la fecha con formato 'dd/MM/yyyy'", "00/00/0000");
+				// Comprobamos que la fecha introducida sea correcta
 				if (fechaAdecuada(fecha)) {
 					Date fechaDate = ParseFecha(fecha);
 					compra.setFechacompra(fechaDate);
@@ -85,6 +98,7 @@ public class MetodosCompra {
 				}
 
 				precio = JOptionPane.showInputDialog("Escribe el precio");
+				// Comprobamos que el precio introducido sea correcot
 				if (menu.validanDecimal(precio)) {
 					compra.setPreciocompra(BigDecimal.valueOf(Double.parseDouble(precio)));
 				} else {
@@ -96,39 +110,50 @@ public class MetodosCompra {
 				JOptionPane.showMessageDialog(null, "Introduce el usuario que realiza la compra", "Recordar",
 						JOptionPane.DEFAULT_OPTION);
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
-				existePk = mu.comprobarPk(numeroIntroudcido);
+				existePk = mUsuario.comprobarPk(numeroIntroudcido);
 
+				// Comprobamos si el usuario que realiza la compra existe
 				if (existePk) {
 					Usuario usuarioPk = cUsuario.findByPK(numeroIntroudcido);
 					compra.setUsuario(usuarioPk);
 					cCompra.crearEntidad(compra);
 					JOptionPane.showMessageDialog(null, "El usuario se a creado correctamente", "Correcto",
 							JOptionPane.DEFAULT_OPTION);
-
+					System.out.println("---------Los valores de la nueva Compra son:----------");
+					System.out.println(compra.toString());
 				} else {
-					JOptionPane.showMessageDialog(null, "La pk no existe", "error", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(null, "La pk no existe", "Error", JOptionPane.DEFAULT_OPTION);
 				}
 
 				break;
-			case "Modificar":
+
+			case "Modificar Compra":
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
 				if (existePk) {
 					compra = cCompra.findByPK(numeroIntroudcido);
 					realizarModificacionCompra(compra);
+					JOptionPane.showMessageDialog(null, "La Compra a sido modificada Correctamente", "Correcto",
+							JOptionPane.DEFAULT_OPTION);
+					System.out.println("---------Los valores de la Compra modificada son:----------");
+					System.out.println(compra.toString());
 				} else {
 					JOptionPane.showMessageDialog(null, "El valor con esta pk no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
 				}
 				break;
+
 			case "Buscar por precio":
 				precio = JOptionPane.showInputDialog("Escribe el precio");
+				// Comprobamos que el precio este introducido correctamente
 				if (menu.validanDecimal(precio)) {
 					double buscaPrecio = Double.parseDouble(precio);
 					if (existePrecio(buscaPrecio)) {
+						System.out.println("---------La compra con el precio '" + precio + "' es:----------");
 						System.out.print(cCompra.findByPrecio(buscaPrecio).toString());
 					} else {
-						JOptionPane.showMessageDialog(null, "El precio introducido no existe", "Recordar",
+						JOptionPane.showMessageDialog(null,
+								"El precio introducido no existe o hay varios precios iguales", "Recordar",
 								JOptionPane.DEFAULT_OPTION);
 					}
 
@@ -139,16 +164,19 @@ public class MetodosCompra {
 				}
 
 				break;
+
 			case "Buscar por clave":
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
 				if (existePk) {
+					System.out.println("---------La Compra con la Pk '" + numeroIntroudcido + "' es:----------");
 					System.out.println(cCompra.findByPK(numeroIntroudcido).toString());
 				} else {
 					JOptionPane.showMessageDialog(null, "La clave primaria no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
 				}
 				break;
+
 			case "Salir":
 				repetir = false;
 				break;
@@ -156,11 +184,12 @@ public class MetodosCompra {
 
 		} while (repetir == true);
 
+		// Cuando salimos del bucle llamamos de nuevo al menu principal
 		menu.tablaElegida();
 
 	}
 
-	// Metodo que comprueba si la pk existe
+	// Metodo que comprueba si la pk existe en la tabla Compra
 	public boolean comprobarPk(int pk) {
 
 		try {
@@ -185,7 +214,7 @@ public class MetodosCompra {
 
 	}
 
-	// Metodo que se introduce un fecha y devuleve la fecha
+	// Metodo que introduce un String y devuleve la fecha en formato Date
 	public static Date ParseFecha(String fecha) {
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		Date fechaDate = null;
@@ -199,6 +228,9 @@ public class MetodosCompra {
 		return fechaDate;
 	}
 
+	// Metodos que comprueba si el precio introducido existe en la tabla Compra o si
+	// ese precio
+	// existe varias veces no devuelve nada. Este es capturado por el try
 	public boolean existePrecio(double precio) {
 
 		try {
@@ -209,14 +241,15 @@ public class MetodosCompra {
 		}
 	}
 
-	// Metodo que realiza la modificacion de los valores de usuario
+	// Metodo que realiza la modificacion de los valores de una Compra, eligiendo
+	// los valores que quiere modificar
 	public void realizarModificacionCompra(Compra compraModi) {
 		String eleccionModificar = valoresModificar();
-		String fecha="";
-		String precio="";
+		String fecha = "";
+		String precio = "";
 		switch (eleccionModificar) {
 		case "Fecha":
-			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'");
+			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'","00/00/0000");
 			if (fechaAdecuada(fecha)) {
 				Date fechaDate = ParseFecha(fecha);
 				compraModi.setFechacompra(fechaDate);
@@ -235,7 +268,7 @@ public class MetodosCompra {
 			}
 			break;
 		case "Todo":
-			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'");
+			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'","00/00/0000");
 			if (fechaAdecuada(fecha)) {
 				Date fechaDate = ParseFecha(fecha);
 				compraModi.setFechacompra(fechaDate);
@@ -258,12 +291,15 @@ public class MetodosCompra {
 		cCompra.ModificarEntidad(compraModi);
 	}
 
+	// Metodo que permite elegir que queremos modificar de la tabla cuenta
 	public String valoresModificar() {
+
+		Icon icono = new ImageIcon(getClass().getResource("../img/editar.png"));
 
 		String[] opciones = { "Fecha", "Precio", "Todo" };
 
-		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas modificar?", "Elegir",
-				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas modificar?", "Modificar Compra",
+				JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
 
 		return opcionElegida;
 	}

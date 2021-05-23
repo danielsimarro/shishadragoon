@@ -45,13 +45,13 @@ public class MetodosCuenta {
 
 		do {
 			// Inicializamos valores cada vez que se vuelve a ejecutar el bucle
-			String op = menuCuenta();
+			String opcion = menuCuenta();
 			numeroIntroudcido = -1;
 			repetir = true;
 			existePk = false;
 			cuenta = new Cuenta();
 
-			switch (op) {
+			switch (opcion) {
 
 			case "Mostrar todos los valores":
 				List<Cuenta> listaCuenta = cCuenta.findAll();
