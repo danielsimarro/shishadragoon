@@ -74,7 +74,7 @@ public class MetodosCompra {
 
 				break;
 			case "Crear":
-				String fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'");
+				String fecha = JOptionPane.showInputDialog("Escribe la fecha con formato 'dd/MM/yyyy'","00/00/0000");
 				if (fechaAdecuada(fecha)) {
 					Date fechaDate = ParseFecha(fecha);
 					compra.setFechacompra(fechaDate);

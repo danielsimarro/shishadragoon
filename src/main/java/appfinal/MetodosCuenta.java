@@ -2,6 +2,8 @@ package appfinal;
 
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import controladores.ControladorCuenta;
@@ -17,17 +19,19 @@ public class MetodosCuenta {
 
 	// Opciones a elegir de la tabla cuenta
 	public String menuCuenta() {
+		
+		Icon icono = new ImageIcon(getClass().getResource("../img/cuenta.png"));
 
 		String[] opciones = { "Mostrar todos los valores", "Borrar Cuenta", "Crear Cuenta", "Modificar Cuenta",
 				"Buscar por Mail", "Buscar por clave", "Salir" };
 
-		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas realizar?", "Elegir",
-				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas realizar?", "Tabla Cuenta",
+				JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
 
 		return opcionElegida;
 	}
 
-	// Este metodo contiene un swicth con las posicles elecciones que haya elegido
+	// Este metodo contiene un swicth con las posibles elecciones que haya elegido
 	// el usuario
 	// cuendo el usuario eligue una opciion entra y realiza esa función
 	public void opcionesCuenta() {
@@ -84,6 +88,8 @@ public class MetodosCuenta {
 				cCuenta.crearEntidad(cuenta);
 				JOptionPane.showMessageDialog(null, "La cuenta a sido creada Correctamente", "Correcto",
 						JOptionPane.DEFAULT_OPTION);
+				System.out.println("---------Los valores de la nueva cuenta son:----------");
+				System.out.println(cuenta.toString());
 				break;
 
 			case "Modificar Cuenta":
@@ -92,6 +98,10 @@ public class MetodosCuenta {
 				if (existePk) {
 					cuenta = cCuenta.findByPK(numeroIntroudcido);
 					realizarModificacionCuenta(cuenta);
+					JOptionPane.showMessageDialog(null, "La cuenta a sido modificada Correctamente", "Correcto",
+							JOptionPane.DEFAULT_OPTION);
+					System.out.println("---------Los valores de la cuenta modificada son:----------");
+					System.out.println(cuenta.toString());
 				} else {
 					JOptionPane.showMessageDialog(null, "El valor con esta pk no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
@@ -149,11 +159,13 @@ public class MetodosCuenta {
 
 	// Metodo que permite elegir que queremos modificar de la tabla cuenta
 	public String valoresModificar() {
+		
+		Icon icono = new ImageIcon(getClass().getResource("../img/editar.png"));
 
 		String[] opciones = { "Email", "Contraseña", "Todo" };
 
-		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas modificar?", "Elegir",
-				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas modificar?", "Modificar Cuenta",
+				JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
 
 		return opcionElegida;
 	}

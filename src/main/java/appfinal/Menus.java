@@ -8,34 +8,35 @@ import aplicaciones.MetodosDetalle;
 import aplicaciones.MetodosProducto;
 
 public class Menus {
-	// Metodo que accede a los metodos de la tabla dependiendo de la tabla que haya
+	// Metodo que accede a los metodos de cada tabla dependiendo de la tabla que haya
 	// seleccionado en elegirTabla
 	public void tablaElegida() {
 
 		String eleccion;
-
 		boolean repetir;
 
 		do {
 			eleccion = elegirTabla();
 			repetir = true;
 			switch (eleccion) {
+			//Ceunado el usuario elija la tabla a consultar/modificar, se creara el objeto para acceder a los 
+			//metodos de la tabla elegida y se accedera al menu principal de cada tabla
 			case "Cuenta":
 
-				MetodosCuenta mc = new MetodosCuenta();
-				mc.opcionesCuenta();
+				MetodosCuenta mCuenta = new MetodosCuenta();
+				mCuenta.opcionesCuenta();
 
 				break;
 			case "Usuario":
 				
-				MetodosUsuario mu = new MetodosUsuario();
-				mu.opcionesUsuario();
+				MetodosUsuario mUsuario = new MetodosUsuario();
+				mUsuario.opcionesUsuario();
 				
 				break;
 			case "Compra":
 				
-				MetodosCompra mcomp = new MetodosCompra();
-				mcomp.opcionesCompra();;
+				MetodosCompra mCompra = new MetodosCompra();
+				mCompra.opcionesCompra();;
 				
 				break;
 				
@@ -56,7 +57,9 @@ public class Menus {
 				break;
 			}
 		} while (repetir == true);
-
+		
+		//Esto permite asegurarnos de que cuando el usuario pulse en salir y se salga del menu principal
+		//se cierre nuestra aplicación
 		CierreAplicacion app = new CierreAplicacion();
 		app.attachShutDownHook();
 		System.exit(0);
@@ -70,8 +73,8 @@ public class Menus {
 
 		String[] opciones = { "Cuenta", "Usuario", "Compra", "Detallepedido", "Producto", "Salir" };
 
-		String opcionElegida = (String) JOptionPane.showInputDialog(null, "Selecciona la tabla a modificar/consultar",
-				"Elegir", JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
+		String opcionElegida = (String) JOptionPane.showInputDialog(null, "Selecciona la tabla a modificar",
+				"Elegir tabla", JOptionPane.QUESTION_MESSAGE, icono, opciones, opciones[0]);
 
 		return opcionElegida;
 	}
@@ -82,7 +85,6 @@ public class Menus {
 		int op = JOptionPane.showConfirmDialog(null, "¿Deseas salir?", "Salida del programa",
 				JOptionPane.YES_NO_OPTION);
 
-		// System.out.println("Opcion: " + op); // Depuración
 		if (op == JOptionPane.YES_OPTION) {
 			// Quiere salir
 			JOptionPane.showMessageDialog(null, "Saliendo...."); // Depuración
@@ -115,8 +117,7 @@ public class Menus {
 		}
 
 	// Este metodo permite introducir un valor y comprobar que este valor solo pueda
-	// ser un número
-	// devolviendo este número
+	// ser un número, devolviendo este número
 	public int ComprobarNumeroDevolver() {
 
 		Icon icono = new ImageIcon(getClass().getResource("../img/error.png"));
@@ -125,7 +126,7 @@ public class Menus {
 
 		boolean esNumero = true;
 		do {
-			name = JOptionPane.showInputDialog("Escribe aqui el número (Solo numeros)");
+			name = JOptionPane.showInputDialog(null,"Escribe aqui el número (Solo numeros)");
 			esNumero = validanNumero(name);
 			if (!esNumero) {
 				JOptionPane.showMessageDialog(null, "Introduzca solo números", "Error", JOptionPane.DEFAULT_OPTION,
