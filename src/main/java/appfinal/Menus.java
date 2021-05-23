@@ -4,6 +4,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import aplicaciones.MetodosDetalle;
+import aplicaciones.MetodosProducto;
+
 public class Menus {
 	// Metodo que accede a los metodos de la tabla dependiendo de la tabla que haya
 	// seleccionado en elegirTabla
@@ -30,10 +33,23 @@ public class Menus {
 				
 				break;
 			case "Compra":
+				
+				MetodosCompra mcomp = new MetodosCompra();
+				mcomp.opcionesCompra();;
+				
 				break;
+				
 			case "Detallepedido":
+				
+				MetodosDetalle mDetalle = new MetodosDetalle();
+				mDetalle.opcionesDetalle();
+				
 				break;
 			case "Producto":
+				
+				MetodosProducto mProducto = new MetodosProducto();
+				mProducto.opcionesProducto();
+				
 				break;
 			case "Salir":
 				repetir = salir();
@@ -86,6 +102,17 @@ public class Menus {
 			return false;
 		}
 	}
+	
+	// Este metodo permite verificar si el valor introducido es un decimal
+		public boolean validanDecimal(String cadena) {
+
+			try {
+				double num = Double.parseDouble(cadena);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 
 	// Este metodo permite introducir un valor y comprobar que este valor solo pueda
 	// ser un número
@@ -98,7 +125,7 @@ public class Menus {
 
 		boolean esNumero = true;
 		do {
-			name = JOptionPane.showInputDialog("Escribe la clave a buscar");
+			name = JOptionPane.showInputDialog("Escribe aqui el número (Solo numeros)");
 			esNumero = validanNumero(name);
 			if (!esNumero) {
 				JOptionPane.showMessageDialog(null, "Introduzca solo números", "Error", JOptionPane.DEFAULT_OPTION,

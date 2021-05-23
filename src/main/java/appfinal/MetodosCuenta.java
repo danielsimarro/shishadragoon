@@ -10,15 +10,16 @@ import entidades.Cuenta;
 public class MetodosCuenta {
 
 	// Los atributos de la clase son objetos para acceder a los metodos de otras
-	// clases
-	private static ControladorCuenta cc = new ControladorCuenta();
+	// clases, estos estan inicializados para no tener que inicializarlos cada vez
+	// que los vayamos a usar
+	private static ControladorCuenta cCuenta = new ControladorCuenta();
 	private static Menus menu = new Menus();
 
 	// Opciones a elegir de la tabla cuenta
 	public String menuCuenta() {
 
-		String[] opciones = { "Mostrar todo", "Borrar", "Crear", "Modificar", "Buscar por Mail", "Buscar por clave",
-				"Salir" };
+		String[] opciones = { "Mostrar todos los valores", "Borrar Cuenta", "Crear Cuenta", "Modificar Cuenta",
+				"Buscar por Mail", "Buscar por clave", "Salir" };
 
 		String opcionElegida = (String) JOptionPane.showInputDialog(null, "¿Que deseas realizar?", "Elegir",
 				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
@@ -26,39 +27,43 @@ public class MetodosCuenta {
 		return opcionElegida;
 	}
 
-	// Permite entrar a los metodos de la tabla cuenta dependiendo de la eleccion
-	// hecha por el usuario
+	// Este metodo contiene un swicth con las posicles elecciones que haya elegido
+	// el usuario
+	// cuendo el usuario eligue una opciion entra y realiza esa función
 	public void opcionesCuenta() {
 
+		// Atributos para controlar lo que introduce el usuario
 		boolean repetir;
 		boolean existePk;
 		int numeroIntroudcido;
-		String contra;
-		String correo;
-		Cuenta cuentaCambios;
+		// Cuenta que se crea nueva cada vez que se inicializa el bucle
+		Cuenta cuenta;
 
 		do {
+			// Inicializamos valores cada vez que se vuelve a ejecutar el bucle
 			String op = menuCuenta();
 			numeroIntroudcido = -1;
 			repetir = true;
 			existePk = false;
-			contra = "";
-			correo = "";
-			cuentaCambios = new Cuenta();
+			cuenta = new Cuenta();
 
 			switch (op) {
-			case "Mostrar todo":
-				List<Cuenta> listaCuenta = cc.findAll();
+
+			case "Mostrar todos los valores":
+				List<Cuenta> listaCuenta = cCuenta.findAll();
+				System.out.println("---------Los valores de la tabla Cuenta son:----------");
 				listaCuenta.forEach(System.out::println);
 				break;
-			case "Borrar":
+
+			case "Borrar Cuenta":
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
 				if (existePk) {
+
+					cuenta = cCuenta.findByPK(numeroIntroudcido);
 					
-					cuentaCambios = cc.findByPK(numeroIntroudcido);
-					if (cuentaCambios.getUsuariosCuenta() == null) {
-						cc.borrarEntidad(cuentaCambios);
+					if (cuenta.getUsuariosCuenta() == null) {
+						cCuenta.borrarEntidad(cuenta);
 						JOptionPane.showMessageDialog(null, "La cuenta a sido borrada correctamente", "Perfecto",
 								JOptionPane.DEFAULT_OPTION);
 					} else {
@@ -71,49 +76,34 @@ public class MetodosCuenta {
 							JOptionPane.DEFAULT_OPTION);
 				}
 				break;
-			case "Crear":
-				contra = JOptionPane.showInputDialog("Escribe la contraseña");
-				correo = JOptionPane.showInputDialog("Escribe el correo");
 
-				cuentaCambios.setContrasena(contra);
-				cuentaCambios.setCorreoelectronico(correo);
-				cc.crearEntidad(cuentaCambios);
+			case "Crear Cuenta":
+
+				cuenta.setContrasena(JOptionPane.showInputDialog("Escribe la contraseña"));
+				cuenta.setCorreoelectronico(JOptionPane.showInputDialog("Escribe el correo"));
+				cCuenta.crearEntidad(cuenta);
+				JOptionPane.showMessageDialog(null, "La cuenta a sido creada Correctamente", "Correcto",
+						JOptionPane.DEFAULT_OPTION);
 				break;
-			case "Modificar":
+
+			case "Modificar Cuenta":
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
 				if (existePk) {
-					cuentaCambios = cc.findByPK(numeroIntroudcido);
-					String eleccionModificar = valoresModificar();
-
-					switch (eleccionModificar) {
-					case "Email":
-						correo = JOptionPane.showInputDialog("Escribe el correo");
-						cuentaCambios.setCorreoelectronico(correo);
-						break;
-					case "Contraseña":
-						contra = JOptionPane.showInputDialog("Escribe la contraseña");
-						cuentaCambios.setContrasena(contra);
-						break;
-					case "Todo":
-						contra = JOptionPane.showInputDialog("Escribe la contraseña");
-						correo = JOptionPane.showInputDialog("Escribe el correo");
-
-						cuentaCambios.setContrasena(contra);
-						cuentaCambios.setCorreoelectronico(correo);
-
-						break;
-					}
-					cc.ModificarEntidad(cuentaCambios);
+					cuenta = cCuenta.findByPK(numeroIntroudcido);
+					realizarModificacionCuenta(cuenta);
 				} else {
 					JOptionPane.showMessageDialog(null, "El valor con esta pk no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
 				}
+
+				break;
+
 			case "Buscar por Mail":
 				String introduceMail = JOptionPane.showInputDialog("Escribe el mail a buscar");
 				try {
-					cuentaCambios = cc.findByMail(introduceMail);
-					System.out.println(cuentaCambios.toString());
+					System.out.println("---------La cuenta con el mail '" + introduceMail + "' es:----------");
+					System.out.println(cCuenta.findByMail(introduceMail).toString());
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "El mail introducido no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
@@ -121,14 +111,19 @@ public class MetodosCuenta {
 				}
 
 				break;
+
 			case "Buscar por clave":
 				numeroIntroudcido = menu.ComprobarNumeroDevolver();
 				existePk = comprobarPk(numeroIntroudcido);
 				if (!existePk) {
 					JOptionPane.showMessageDialog(null, "El valor con esta pk no existe", "Error",
 							JOptionPane.DEFAULT_OPTION);
+				} else {
+					System.out.println("---------La cuenta con la Pk '" + numeroIntroudcido + "' es:----------");
+					System.out.println(cCuenta.findByPK(numeroIntroudcido));
 				}
 				break;
+
 			case "Salir":
 				repetir = false;
 				break;
@@ -136,22 +131,23 @@ public class MetodosCuenta {
 
 		} while (repetir == true);
 
+		// Cuando salimos del bucle llamamos de nuevo al menu principal
 		menu.tablaElegida();
 
 	}
 
-	// Metodo que comprueba si la pk existe
+	// Metodo que comprueba si la pk existe en la tabla Cuenta
 	public boolean comprobarPk(int pk) {
 
 		try {
-			cc.findByPK(pk);
+			cCuenta.findByPK(pk);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 
-	// Metodo que permite elegir que queremos modificar
+	// Metodo que permite elegir que queremos modificar de la tabla cuenta
 	public String valoresModificar() {
 
 		String[] opciones = { "Email", "Contraseña", "Todo" };
@@ -162,5 +158,24 @@ public class MetodosCuenta {
 		return opcionElegida;
 	}
 
+	// Metodo que realiza la modificacion de los valores de una Cuenta, eligiendo
+	// los valores que quiere modificar
+	public void realizarModificacionCuenta(Cuenta cuenta) {
+		String eleccionModificar = valoresModificar();
 
+		switch (eleccionModificar) {
+		case "Email":
+			cuenta.setCorreoelectronico(JOptionPane.showInputDialog("Escribe el correo"));
+			break;
+		case "Contraseña":
+			cuenta.setContrasena(JOptionPane.showInputDialog("Escribe la contraseña"));
+			break;
+		case "Todo":
+			cuenta.setContrasena(JOptionPane.showInputDialog("Escribe la contraseña"));
+			cuenta.setCorreoelectronico(JOptionPane.showInputDialog("Escribe el correo"));
+
+			break;
+		}
+		cCuenta.ModificarEntidad(cuenta);
+	}
 }
