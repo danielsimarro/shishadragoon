@@ -103,7 +103,7 @@ public class Menus {
 	public boolean validanNumero(String cadena) {
 
 		try {
-			int num = Integer.parseInt(cadena);
+			Integer.parseInt(cadena);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -114,7 +114,7 @@ public class Menus {
 	public boolean validanDecimal(String cadena) {
 
 		try {
-			double num = Double.parseDouble(cadena);
+			 Double.parseDouble(cadena);
 			return true;
 		} catch (Exception e) {
 			return false;

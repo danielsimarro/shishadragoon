@@ -1,7 +1,6 @@
 package appfinal;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -86,16 +85,7 @@ public class MetodosCompra {
 				break;
 
 			case "Crear Compra":
-				String fecha = JOptionPane.showInputDialog("Escribe la fecha con formato 'dd/MM/yyyy'", "00/00/0000");
-				// Comprobamos que la fecha introducida sea correcta
-				if (fechaAdecuada(fecha)) {
-					Date fechaDate = ParseFecha(fecha);
-					compra.setFechacompra(fechaDate);
-				} else {
-					JOptionPane.showMessageDialog(null, "La fecha introducida no es correcta", "Recordar",
-							JOptionPane.DEFAULT_OPTION);
-					break;
-				}
+				compra.setFechacompra(convertirFechaDate());
 
 				precio = JOptionPane.showInputDialog("Escribe el precio");
 				// Comprobamos que el precio introducido sea correcot
@@ -201,32 +191,32 @@ public class MetodosCompra {
 	}
 
 	// Metodo que comprueba si la fecha es adecuada
-	public static boolean fechaAdecuada(String fecha) {
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-		Date fechaDate = null;
-		try {
-			fechaDate = formato.parse(fecha);
-			return true;
-		} catch (Exception e) {
-			return false;
-
-		}
-
-	}
+//	public static boolean fechaAdecuada(String fecha) {
+//		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+//		Date fechaDate = null;
+//		try {
+//			fechaDate = formato.parse(fecha);
+//			return true;
+//		} catch (Exception e) {
+//			return false;
+//
+//		}
+//
+//	}
 
 	// Metodo que introduce un String y devuleve la fecha en formato Date
-	public static Date ParseFecha(String fecha) {
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-		Date fechaDate = null;
-		try {
-			fechaDate = formato.parse(fecha);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "El fromato de la fecha no es el adecuado", "Error",
-					JOptionPane.DEFAULT_OPTION);
-
-		}
-		return fechaDate;
-	}
+//	public static Date ParseFecha(String fecha) {
+//		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+//		Date fechaDate = null;
+//		try {
+//			fechaDate = formato.parse(fecha);
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, "El formato de la fecha no es el adecuado", "Error",
+//					JOptionPane.DEFAULT_OPTION);
+//
+//		}
+//		return fechaDate;
+//	}
 
 	// Metodos que comprueba si el precio introducido existe en la tabla Compra o si
 	// ese precio
@@ -245,18 +235,10 @@ public class MetodosCompra {
 	// los valores que quiere modificar
 	public void realizarModificacionCompra(Compra compraModi) {
 		String eleccionModificar = valoresModificar();
-		String fecha = "";
 		String precio = "";
 		switch (eleccionModificar) {
 		case "Fecha":
-			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'","00/00/0000");
-			if (fechaAdecuada(fecha)) {
-				Date fechaDate = ParseFecha(fecha);
-				compraModi.setFechacompra(fechaDate);
-			} else {
-				JOptionPane.showMessageDialog(null, "La fecha introducida no es correcta", "Recordar",
-						JOptionPane.DEFAULT_OPTION);
-			}
+			compraModi.setFechacompra(convertirFechaDate());
 			break;
 		case "Precio":
 			precio = JOptionPane.showInputDialog("Escribe el precio");
@@ -268,18 +250,12 @@ public class MetodosCompra {
 			}
 			break;
 		case "Todo":
-			fecha = JOptionPane.showInputDialog("Escribe la fecha,con formato 'dd/MM/yyyy'","00/00/0000");
-			if (fechaAdecuada(fecha)) {
-				Date fechaDate = ParseFecha(fecha);
-				compraModi.setFechacompra(fechaDate);
-			} else {
-				JOptionPane.showMessageDialog(null, "La fecha introducida no es correcta", "Recordar",
-						JOptionPane.DEFAULT_OPTION);
-				break;
-			}
+			compraModi.setFechacompra(convertirFechaDate());
 			precio = JOptionPane.showInputDialog("Escribe el precio");
 			if (menu.validanDecimal(precio)) {
 				compraModi.setPreciocompra(BigDecimal.valueOf(Double.parseDouble(precio)));
+				
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "El decimal introducido no es correcto", "Recordar",
 						JOptionPane.DEFAULT_OPTION);
@@ -303,4 +279,63 @@ public class MetodosCompra {
 
 		return opcionElegida;
 	}
+
+	// Metodos que devuelve un DATE, donde el usuario introduce los datos  por teclado
+	public Date convertirFechaDate() {
+
+		boolean repetirTodo;
+		Date fecha = new Date();
+		int year;
+		int mes;
+		do {
+
+			repetirTodo = true;
+			boolean repetirYear = true;
+			do {
+				JOptionPane.showMessageDialog(null, "A continuación introduce el año de compra", "Recordar",
+						JOptionPane.DEFAULT_OPTION);
+				year = menu.ComprobarNumeroDevolver();
+				if (year > 1900) {
+					year = year - 1900;
+					repetirYear = false;
+				}
+			} while (repetirYear);
+
+			JOptionPane.showMessageDialog(null, "A continuación introduce el dia de la compra", "Recordar",
+					JOptionPane.DEFAULT_OPTION);
+			int dia = menu.ComprobarNumeroDevolver();
+
+			boolean repetirMes;
+			mes = -1;
+			do {
+				JOptionPane.showMessageDialog(null, "A continuación introduce el mes de la compra", "Recordar",
+						JOptionPane.DEFAULT_OPTION);
+				mes = menu.ComprobarNumeroDevolver();
+				repetirMes = true;
+
+				mes -= 1;
+
+				if (mes >= 0 && mes <= 11) {
+					repetirMes = false;
+				}else {
+					JOptionPane.showMessageDialog(null, "Mes introducido incorre", "Error",
+							JOptionPane.DEFAULT_OPTION);
+				}
+			} while (repetirMes);
+
+			try {
+				fecha = new Date(year, mes, dia);
+				repetirTodo = false;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "La fecha introducida no es correcta", "Recordar",
+						JOptionPane.DEFAULT_OPTION);
+
+			}
+
+		} while (repetirTodo);
+
+		return fecha;
+
+	}
+
 }
