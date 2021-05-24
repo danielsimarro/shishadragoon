@@ -1,4 +1,4 @@
-package aplicaciones;
+package appfinal;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import appfinal.Menus;
 import controladores.ControladorProducto;
 import entidades.Producto;
 

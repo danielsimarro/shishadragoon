@@ -4,9 +4,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import aplicaciones.MetodosDetalle;
-import aplicaciones.MetodosProducto;
-
 public class Menus {
 	// Metodo que accede a los metodos de cada tabla dependiendo de la tabla que
 	// haya

@@ -1,13 +1,10 @@
-package aplicaciones;
+package appfinal;
 
 import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
-import appfinal.Menus;
-import appfinal.MetodosCompra;
 
 import controladores.ControladorCompra;
 import controladores.ControladorDetalle;
